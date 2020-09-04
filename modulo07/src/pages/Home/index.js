@@ -1,110 +1,51 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import { MdAddShoppingCart } from 'react-icons/md';
 
+import { formatPrice } from '../../util/format';
+import api from '../../services/api';
+
 import { ProductList } from './styles';
 
-function Home() {
-  return (
-    <ProductList>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/chuteira-futsal-nike-tiempo-legend-8-academy-ic/18/HZM-1698-118/HZM-1698-118_zoom2.jpg?ts=1564583400&ims=326x"
-          alt="Chuteira"
-        />
-        <strong>Tênis show de bola!</strong>
-        <span>R$ 125,00</span>
+class Home extends Component {
+  states = {
+    products: [],
+  };
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#fff" /> 5
-          </div>
+  async componentDidMount() {
+    const res = await api.get('products');
 
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/chuteira-futsal-nike-tiempo-legend-8-academy-ic/18/HZM-1698-118/HZM-1698-118_zoom2.jpg?ts=1564583400&ims=326x"
-          alt="Chuteira"
-        />
-        <strong>Tênis show de bola!</strong>
-        <span>R$ 125,00</span>
+    const data = res.data.map((product) => ({
+      ...product,
+      priceFormatted: formatPrice(product.price),
+    }));
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#fff" /> 5
-          </div>
+    this.setState({ products: data });
+  }
 
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/chuteira-futsal-nike-tiempo-legend-8-academy-ic/18/HZM-1698-118/HZM-1698-118_zoom2.jpg?ts=1564583400&ims=326x"
-          alt="Chuteira"
-        />
-        <strong>Tênis show de bola!</strong>
-        <span>R$ 125,00</span>
+  render() {
+    const { products } = this.state;
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#fff" /> 5
-          </div>
+    return (
+      <ProductList>
+        {products.map((product) => (
+          <li key={product.id}>
+            <img src={product.image} alt={product.title} />
+            <strong>{product.title}</strong>
+            <span>{product.priceFormatted}</span>
 
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/chuteira-futsal-nike-tiempo-legend-8-academy-ic/18/HZM-1698-118/HZM-1698-118_zoom2.jpg?ts=1564583400&ims=326x"
-          alt="Chuteira"
-        />
-        <strong>Tênis show de bola!</strong>
-        <span>R$ 125,00</span>
+            <button type="button">
+              <div>
+                <MdAddShoppingCart size={16} color="#fff" /> 5
+              </div>
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#fff" /> 5
-          </div>
-
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/chuteira-futsal-nike-tiempo-legend-8-academy-ic/18/HZM-1698-118/HZM-1698-118_zoom2.jpg?ts=1564583400&ims=326x"
-          alt="Chuteira"
-        />
-        <strong>Tênis show de bola!</strong>
-        <span>R$ 125,00</span>
-
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#fff" /> 5
-          </div>
-
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/chuteira-futsal-nike-tiempo-legend-8-academy-ic/18/HZM-1698-118/HZM-1698-118_zoom2.jpg?ts=1564583400&ims=326x"
-          alt="Chuteira"
-        />
-        <strong>Tênis show de bola!</strong>
-        <span>R$ 125,00</span>
-
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#fff" /> 5
-          </div>
-
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
-    </ProductList>
-  );
+              <span>Adicionar ao carrinho</span>
+            </button>
+          </li>
+        ))}
+      </ProductList>
+    );
+  }
 }
 
 export default Home;
