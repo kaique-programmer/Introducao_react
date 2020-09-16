@@ -5,14 +5,14 @@ export function addToCartRequest(id) {
   };
 }
 
-export function addToCartSuccess(id) {
+export function addToCartSuccess(product) {
   return {
     type: '@cart/ADD_SUCCESS',
-    id,
+    product,
   };
 }
 
-export function removeToCart(id) {
+export function removeFromCart(id) {
   return {
     type: '@cart/REMOVE',
     id,
