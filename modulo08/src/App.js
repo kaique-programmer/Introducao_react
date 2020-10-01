@@ -1,12 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 function App() {
-  const [tech, setTech] = useState(['Node', 'Php']);
+  const [tech, setTech] = useState([]);
   const [newTech, setNewTech] = useState('');
 
   function handleAdd() {
     setTech([...tech, newTech]);
   }
+
+  // Substituição do componentDidMount
+  useEffect(() => {
+    const storageTech = localStorage.getItem('tech');
+
+    if (storageTech) {
+      setTech(JSON.parse(storageTech));
+    }
+  }, []);
+
+  // Substituição do componentDidUpdate
+  useEffect(() => {
+    localStorage.setItem('tech', JSON.stringify(tech));
+  }, [tech]);
 
   return (
     <>
