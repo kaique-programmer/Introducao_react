@@ -1,12 +1,14 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 
 function App() {
   const [tech, setTech] = useState([]);
   const [newTech, setNewTech] = useState('');
 
-  function handleAdd() {
+  // substituição de uma função convencional por uma useCallback
+  const handleAdd = useCallback(() => {
     setTech([...tech, newTech]);
-  }
+    setNewTech('');
+  }, [newTech, tech]);
 
   // Substituição do componentDidMount
   useEffect(() => {
@@ -22,6 +24,7 @@ function App() {
     localStorage.setItem('tech', JSON.stringify(tech));
   }, [tech]);
 
+  // useMemo substitui a forma de chamar a função lenght, dessa chama apenas quando a variável sofre alteração
   const techSize = useMemo(() => tech.length, [tech]);
 
   return (
