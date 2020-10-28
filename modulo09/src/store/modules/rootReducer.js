@@ -5,5 +5,5 @@ import user from './user/reducer';
 
 export default combineReducers({
   auth,
-  user,
+  user, // Puxando as informações do usuário para serem armazenadas
 });
