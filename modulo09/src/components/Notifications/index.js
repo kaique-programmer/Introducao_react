@@ -1,6 +1,7 @@
-import React from 'react';
-
+import React, { useState } from 'react';
 import { MdNotifications } from 'react-icons/md';
+
+import api from '~/services/api';
 
 import {
   Container,
@@ -11,12 +12,27 @@ import {
 } from './styles';
 
 function Notifications() {
+  const [visible, setVisible] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    async function loadNotifications() {
+      const response = await api.get('notifications');
+
+      setNotifications(response.data);
+    }
+  }, []);
+
+  function handleToggleVisible() {
+    setVisible(!visible);
+  }
+
   return (
     <Container>
-      <Badge hasUnread>
+      <Badge onClick={handleToggleVisible} hasUnread>
         <MdNotifications color="#7159c1" size={20} />
       </Badge>
-      <NotificationsList>
+      <NotificationsList visible={visible}>
         <Scroll>
           <Notification unread>
             <p>Você possui um novo agendamento para amanhã</p>
