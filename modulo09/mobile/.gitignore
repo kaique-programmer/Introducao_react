@@ -1,0 +1,15 @@
+# test
+__tests__
+
+# expo
+.expo
+
+# android
+android
+
+# ios
+ios
+
+# node_modules
+node_modules
+
