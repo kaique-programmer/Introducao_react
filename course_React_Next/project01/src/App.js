@@ -3,38 +3,36 @@ import { Component } from 'react';
 class App extends Component {
 
   state = {
-    name: 'kaique',
-    counter: 0
-  }
-
-  handlePClik = () => {
-    this.setState({ name: 'oliver' });
-  }
-
-  handleAClick = (event) => {
-    event.preventDefault();
-    const { counter } = this.state;
-    this.setState({ counter: counter + 1 });
+   posts: [
+     {
+       id: 1,
+       title: 'title one',
+       body: 'the body 1'
+     },
+     {
+       id: 2,
+       title: 'title two',
+       body: 'the body 2'
+     },
+     {
+       id: 3,
+       title: 'title three',
+       body: 'the body 3'
+     }
+    ]
   }
 
   render() {
-    const {name, counter} = this.state;
+    const { posts } = this.state;
+
   return (
     <div className="App">
-      <header className="App-header">        
-        <p onClick={this.handlePClik}>
-          {name}{counter}
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={this.handleAClick}
-        >
-          link contador
-        </a>
-      </header>
+      {posts.map(post => (
+        <div key={post.id}>
+          <h1>{post.title}</h1>
+          <p>{post.body}</p>
+        </div>
+      ))}
     </div>
   );
   }
