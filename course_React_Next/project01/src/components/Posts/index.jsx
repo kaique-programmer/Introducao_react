@@ -2,7 +2,7 @@ import P from 'prop-types';
 import './styles.css';
 import { PostCard } from "../PostCard";
 
-export const Posts = ({ posts }) => (
+export const Posts = ({ posts = [] }) => (
   <div className="posts">
     {posts.map(post => (
       <PostCard
@@ -16,9 +16,9 @@ export const Posts = ({ posts }) => (
   </div>
 );
 
-Posts.defaultProps = {
-  posts: [],
-}
+// Posts.defaultProps = {
+//   posts: [],
+// }
 Posts.prototype = {
   posts: P.arrayOf(
     P.shape({
