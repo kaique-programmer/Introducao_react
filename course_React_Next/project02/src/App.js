@@ -8,13 +8,15 @@ import { useEffect, useMemo, useState } from 'react';
 
 const Post = ({ post }) => {
   console.log('filho, renderizou');
+  return (
     <div key={post.id} className="post">
       <h1>{post.title}</h1>
       <p>{post.body}</p>
-    </div>;
+    </div>
+  );
 };
 
-Props.propTypes = {
+Post.propTypes = {
   post: Props.shape({
     id: Props.number,
     title: Props.string,
@@ -29,11 +31,9 @@ function App() {
 
   // componentDidMount
   useEffect(() => {
-    setTimeout(() => {
-      fetch('https://jsonplaceholder.typicode.com/posts')
-        .then((response) => response.json())
-        .then((response) => setPosts(response));
-    }, 5000);
+    fetch('https://jsonplaceholder.typicode.com/posts')
+      .then((response) => response.json())
+      .then((response) => setPosts(response));
   }, []);
 
   return (
@@ -42,9 +42,8 @@ function App() {
         <input type="search" value={value} onChange={(event) => setValue(event.target.value)} />
       </p>
       {useMemo(() => (
-        posts.length > 0
-          && posts.map((post) => <Post key={post.id} post={post} />)
-      ), [posts])}
+        posts.length > 0 && posts.map((post) => <Post key={post.id} post={post} />)
+      ))}
 
       {posts.length <= 0 && (<p>Wait! not exist posts</p>)}
     </div>
