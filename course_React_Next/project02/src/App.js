@@ -7,80 +7,58 @@
 /* eslint-disable no-console */
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/button-has-type */
+import React, { useContext, useState } from 'react';
 import Props from 'prop-types';
-import {
-  useEffect, useMemo, useRef, useState,
-} from 'react';
 
-const Post = ({ post, handleClick }) => {
-  console.log('filho, renderizou');
+const globalState = {
+  title: 'The title context',
+  body: 'The body context',
+  counter: 0,
+};
+
+const GlobalContext = React.createContext();
+
+// eslint-disable-next-line
+const Div = ({ children }) => {
   return (
-    <div key={post.id} className="post">
-      <h1 style={{ fontSize: '14px' }} onClick={() => handleClick(post.title)}>{post.title}</h1>
-      <p>{post.body}</p>
-    </div>
+    <>
+      <H1 />
+      <P />
+    </>
   );
 };
 
-Post.propTypes = {
-  post: Props.shape({
-    id: Props.number,
-    title: Props.string,
-    body: Props.string,
-  }),
-  handleClick: Props.func,
+// eslint-disable-next-line
+const H1 = ({ children }) => {
+  const theContext = useContext(GlobalContext);
+  const {
+    contextState: { title, counter },
+  } = theContext;
+  return (
+    <h1>
+      {title}
+      {' '}
+      {counter}
+    </h1>
+  );
+};
+
+const P = () => {
+  const theContext = useContext(GlobalContext);
+  const {
+    contextState: { body, counter },
+    setContextState,
+  } = theContext;
+  return <p onClick={() => setContextState((s) => ({ ...s, counter: s.counter + 1 }))}>{body}</p>;
 };
 
 function App() {
-  const [posts, setPosts] = useState([]);
-  const [value, setValue] = useState('');
-  const input = useRef(null);
-  const counter = useRef(0);
-
-  console.log('pai, renderizou');
-
-  // componentDidMount
-  useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/posts')
-      .then((response) => response.json())
-      .then((response) => setPosts(response));
-  }, []);
-
-  useEffect(() => {
-    input.current.focus();
-    console.log(input.current);
-  }, [value]);
-
-  useEffect(() => {
-    counter.current++;
-  });
-
-  const handleClick = (value) => {
-    setValue(value);
-  };
+  const [contextState, setContextState] = useState(globalState);
 
   return (
-    <div className="App">
-      <h6>
-        Renderizou:
-        {' '}
-        {counter.current}
-        x
-      </h6>
-      <p>
-        <input
-          type="search"
-          value={value}
-          onChange={(event) => setValue(event.target.value)}
-          ref={input}
-        />
-      </p>
-      {useMemo(() => (
-        posts.length > 0 && posts.map((post) => <Post key={post.id} post={post} handleClick={handleClick} />)
-      ))}
-
-      {posts.length <= 0 && (<p>Wait! not exist posts</p>)}
-    </div>
+    <GlobalContext.Provider value={{ contextState, setContextState }}>
+      <Div />
+    </GlobalContext.Provider>
   );
 }
 
