@@ -23,5 +23,6 @@ module.exports = {
     'no-unused-vars': 'off',
     'react/jsx-filename-extension': 'off',
     'import/no-unresolved': 'off',
+    'react/destructuring-assignment': ['off'],
   },
 };
