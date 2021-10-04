@@ -1,9 +1,11 @@
 import * as types from './types';
 
 const loadPosts = async (dispatch) => {
-  const postsRaw = await fetch('https://jsonplaceholder.typicode.com');
+  dispatch({ type: types.POSTS_LOADING });
+
+  const postsRaw = await fetch('https://jsonplaceholder.typicode.com/posts');
   const posts = await postsRaw.json();
-  dispatch({ type: types.POSTS_SUCCESS, payload: posts });
+  return () => dispatch({ type: types.POSTS_SUCCESS, payload: posts });
 };
 
 export default loadPosts;
