@@ -1,11 +1,16 @@
 import { useEffect, useContext, useRef } from 'react';
 import PostsContext from '../../contexts/PostsProvider/context';
 import loadPosts from '../../contexts/PostsProvider/actions';
+import CounterContext from '../../contexts/CounterProvider/context';
+import { decrementCounter, incrementCounter } from '../../contexts/CounterProvider/actions';
 
 const Posts = () => {
   const isMounted = useRef(true);
   const postsContext = useContext(PostsContext);
   const { postsState, postsDispatch } = postsContext;
+
+  const counterContext = useContext(CounterContext);
+  const { counterState, counterDispatch } = counterContext;
 
   useEffect(() => {
     loadPosts(postsDispatch).then((dispatch) => {
@@ -21,6 +26,17 @@ const Posts = () => {
 
   return (
     <div>
+      <button type="button" onClick={() => incrementCounter(counterDispatch)}>
+        Counter
+        {' '}
+        {counterState.counter}
+        +
+      </button>
+      <button type="button" onClick={() => decrementCounter(counterDispatch)}>
+        Counter
+        {counterState.counter}
+        -
+      </button>
       <h1>POSTS</h1>
       {postsState.loading && (
         <p><strong>Loading posts...</strong></p>
