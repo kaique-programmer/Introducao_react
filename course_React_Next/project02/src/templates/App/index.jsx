@@ -1,3 +1,4 @@
+import Home from '../../components/Home';
 import Posts from '../../components/Posts';
 import CounterProvider from '../../contexts/CounterProvider';
 import PostsProvider from '../../contexts/PostsProvider';
@@ -6,13 +7,9 @@ import PostsProvider from '../../contexts/PostsProvider';
 function App() {
   return (
     <>
-      <CounterProvider>
-        <PostsProvider>
-          <div>
-            <Posts />
-          </div>
-        </PostsProvider>
-      </CounterProvider>
+      <div>
+        <Home />
+      </div>
     </>
   );
 }

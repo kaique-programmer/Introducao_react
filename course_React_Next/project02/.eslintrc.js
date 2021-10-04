@@ -24,5 +24,6 @@ module.exports = {
     'react/jsx-filename-extension': 'off',
     'import/no-unresolved': 'off',
     'react/destructuring-assignment': ['off'],
+    'no-console': 'off',
   },
 };
