@@ -10,17 +10,11 @@ const useAsync = (asyncFunction, shouldRun) => {
   });
 
   const run = useCallback(async () => {
-    console.log('EFFECT', new Date().toLocaleString());
-
-    await new Promise((r) => setTimeout(r, 3000));
-
     setState({
       result: null,
       error: null,
       status: 'pending',
     });
-
-    await new Promise((r) => setTimeout(r, 3000));
 
     return asyncFunction()
       .then((response) => {
@@ -49,7 +43,6 @@ const useAsync = (asyncFunction, shouldRun) => {
 };
 
 const fetchData = async () => {
-  await new Promise((r) => setTimeout(r, 3000));
   const data = await fetch('https://jsonplaceholder.typicode.com/posts');
   const json = await data.json();
   return json;
@@ -60,9 +53,7 @@ const Home = () => {
   const [reFetchData, result, error, status] = useAsync(fetchData, true);
 
   useEffect(() => {
-    setTimeout(() => {
-      reFetchData();
-    }, 3000);
+    reFetchData();
   }, [reFetchData]);
 
   function handleClick() {
