@@ -1,7 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-shadow */
-import { Children, cloneElement, useState } from 'react';
+import {
+  Children, cloneElement, createContext, useContext, useState,
+} from 'react';
 
 const s = {
   style: {
@@ -9,40 +11,51 @@ const s = {
   },
 };
 
+const TurnOnOffContext = createContext();
+
 const TurnOnOff = ({ children }) => {
   const [isOn, setIsOn] = useState(false);
   const onTurn = () => setIsOn((s) => !s);
 
-  return Children.map(children, (child) => {
-    const newChild = cloneElement(child, {
-      isOn,
-      onTurn,
-    });
-    return newChild;
-  });
+  return <TurnOnOffContext.Provider value={{ isOn, onTurn }}>{children}</TurnOnOffContext.Provider>;
 };
 
-const TurnedOn = ({ isOn, children }) => (isOn ? children : null);
+const TurnedOn = ({ children }) => {
+  const { isOn } = useContext(TurnOnOffContext);
+  return isOn ? children : null;
+};
 
-const TurnedOff = ({ isOn, children }) => (isOn ? null : children);
+const TurnedOff = ({ children }) => {
+  const { isOn } = useContext(TurnOnOffContext);
+  return isOn ? null : children;
+};
 
-const TurnButton = ({ isOn, onTurn, ...props }) => (
-  <button type="button" onClick={onTurn} {...props}>
-    Turn
-    {isOn ? 'ON' : 'OFF'}
-  </button>
-);
+const TurnButton = ({ ...props }) => {
+  const { isOn, onTurn } = useContext(TurnOnOffContext);
+  return (
+    <button type="button" onClick={onTurn} {...props}>
+      Turn
+      {isOn ? 'OFF' : 'ON'}
+    </button>
+  );
+};
 
 const P = ({ children }) => <p {...s}>{children}</p>;
 
 const Home = () => (
   <TurnOnOff>
-    <TurnedOn>
-      <P>Here are the things ON.</P>
-    </TurnedOn>
-    <TurnedOff>
-      <P>Here are the things OFF</P>
-    </TurnedOff>
+    <div>
+      <header>
+        <TurnedOff>
+          <P>Here are the things OFF</P>
+        </TurnedOff>
+      </header>
+      <section>
+        <TurnedOn>
+          <P>Here are the things ON.</P>
+        </TurnedOn>
+      </section>
+    </div>
     <TurnButton {...s} />
   </TurnOnOff>
 );
