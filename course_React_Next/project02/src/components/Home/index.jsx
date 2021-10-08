@@ -1,8 +1,7 @@
-/* eslint-disable no-shadow */
-/* eslint-disable react/button-has-type */
-/* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
-import { Component, useEffect, useState } from 'react';
+/* eslint-disable react/prop-types */
+/* eslint-disable no-shadow */
+import { Children, cloneElement, useState } from 'react';
 
 const s = {
   style: {
@@ -10,86 +9,42 @@ const s = {
   },
 };
 
-class MyErrorBoundary extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
+const TurnOnOff = ({ children }) => {
+  const [isOn, setIsOn] = useState(false);
+  const onTurn = () => setIsOn((s) => !s);
 
-  static getDerivedStateFromError(error) {
-    // Update the state so that the next rendering will show the alternative UI.
-
-    return { hasError: true };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    // You can also log the error to an error reporting service.
-    // console.log(error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      // You can render any alternative UI
-      return <p {...s}> = Something went wrong(</p>;
-    }
-
-    return this.props.children;
-  }
-}
-
-const ItWillThrowError = () => {
-  const [counter, setCounter] = useState(0);
-
-  useEffect(() => {
-    if (counter > 3) {
-      throw new Error('That boring!!!');
-    }
-  }, [counter]);
-
-  return (
-    <div>
-      <button type="button" {...s} onClick={() => setCounter((s) => s + 1)}>
-        increase
-        {' '}
-        {counter}
-      </button>
-    </div>
-  );
+  return Children.map(children, (child) => {
+    const newChild = cloneElement(child, {
+      isOn,
+      onTurn,
+    });
+    return newChild;
+  });
 };
 
+const TurnedOn = ({ isOn, children }) => (isOn ? children : null);
+
+const TurnedOff = ({ isOn, children }) => (isOn ? null : children);
+
+const TurnButton = ({ isOn, onTurn, ...props }) => (
+  <button type="button" onClick={onTurn} {...props}>
+    Turn
+    {isOn ? 'ON' : 'OFF'}
+  </button>
+);
+
+const P = ({ children }) => <p {...s}>{children}</p>;
+
 const Home = () => (
-  <div {...s}>
-    <MyErrorBoundary>
-      <ItWillThrowError />
-    </MyErrorBoundary>
-    <MyErrorBoundary>
-      <ItWillThrowError />
-    </MyErrorBoundary>
-    <MyErrorBoundary>
-      <ItWillThrowError />
-    </MyErrorBoundary>
-    <MyErrorBoundary>
-      <ItWillThrowError />
-    </MyErrorBoundary>
-    <MyErrorBoundary>
-      <ItWillThrowError />
-    </MyErrorBoundary>
-    <MyErrorBoundary>
-      <ItWillThrowError />
-    </MyErrorBoundary>
-    <MyErrorBoundary>
-      <ItWillThrowError />
-    </MyErrorBoundary>
-    <MyErrorBoundary>
-      <ItWillThrowError />
-    </MyErrorBoundary>
-    <MyErrorBoundary>
-      <ItWillThrowError />
-    </MyErrorBoundary>
-    <MyErrorBoundary>
-      <ItWillThrowError />
-    </MyErrorBoundary>
-  </div>
+  <TurnOnOff>
+    <TurnedOn>
+      <P>Here are the things ON.</P>
+    </TurnedOn>
+    <TurnedOff>
+      <P>Here are the things OFF</P>
+    </TurnedOff>
+    <TurnButton {...s} />
+  </TurnOnOff>
 );
 
 export default Home;
