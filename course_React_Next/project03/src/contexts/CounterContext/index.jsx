@@ -2,7 +2,7 @@ import Props from 'prop-types';
 import { createContext, useContext, useState } from 'react';
 
 export const initialState = {
-  count: 0,
+  counter: 0,
   loading: false,
 }
 
