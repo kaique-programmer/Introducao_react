@@ -1,9 +1,9 @@
 import Props from 'prop-types';
 
-const Button = ({ children, onButtonClick }) => {
+const Button = ({ children, onButtonClick, disabled = false}) => {
   return (
     <>
-      <button type="button" onClick={onButtonClick} style={{ fontSize: '50px' }}>
+      <button type="button" disabled={disabled} onClick={onButtonClick} style={{ fontSize: '50px' }}>
         {children}
       </button>
     </>
@@ -13,6 +13,7 @@ const Button = ({ children, onButtonClick }) => {
 Button.propTypes = {
   children: Props.node.isRequired,
   onButtonClick: Props.node.isRequired,
+  disabled: Props.bool,
 };
 
 export default Button;
