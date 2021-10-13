@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useHistory } from 'react-router';
-import Home from '../../components/Home';
 import { PostsProvider } from '../../contexts/PostsProvider';
 import { Posts } from '../../components/Posts';
 import { CounterProvider } from '../../contexts/CounterProvider';
