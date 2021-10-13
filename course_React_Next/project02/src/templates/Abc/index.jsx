@@ -3,13 +3,6 @@ import { useHistory, useParams } from 'react-router';
 
 const Abc = () => {
   const { slug, id } = useParams();
-  const history = useHistory();
-
-  useEffect(() => {
-    setTimeout(() => {
-      history.push('/');
-    }, 3000);
-  }, [history]);
 
   return (
 
